@@ -56,14 +56,14 @@ class BasicAuth(Auth):
                 return response.decode('utf-8')
             except (binascii.Error, UnicodeDecodeError):
                 return None
-            
+
     from typing import Tuple
 
     def extract_user_credentials(
             self,
             decoded_base64_authorization_header: str) -> Tuple[str, str]:
         """Extract User Credentials
-        
+
         Extracts user credentials from a base64-decoded authorization header
         that uses the Basic authentication flow.
 
