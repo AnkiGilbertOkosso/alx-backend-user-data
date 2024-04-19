@@ -119,7 +119,7 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         """Retrieve Current User from Request
-        
+
         Retrieves the user from a request.
 
         Args:
