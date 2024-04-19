@@ -4,6 +4,8 @@
 import base64
 import binascii
 import re
+
+from models.user import User
 from .auth import Auth
 
 
@@ -57,7 +59,7 @@ class BasicAuth(Auth):
             except (binascii.Error, UnicodeDecodeError):
                 return None
 
-    from typing import Tuple
+    from typing import Tuple, TypeVar
 
     def extract_user_credentials(
             self,
@@ -87,3 +89,30 @@ class BasicAuth(Auth):
                 password = field_match.group('password')
                 return user, password
         return None, None
+
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):  # type: ignore
+        """Retrieve User Object from Credentials
+
+        Retrieves a user based on the user's authentication credentials.
+
+        Args:
+            user_email (str): The email address of the user.
+            user_pwd (str): The password of the user.
+
+        Returns:
+            TypeVar('User'): The user object if authentication is successful,
+            otherwise None.
+        """
+        if type(user_email) == str and type(user_pwd) == str:
+            try:
+                users = User.search({'email': user_email})
+            except Exception:
+                return None
+            if len(users) <= 0:
+                return None
+            if users[0].is_valid_password(user_pwd):
+                return users[0]
+        return None
