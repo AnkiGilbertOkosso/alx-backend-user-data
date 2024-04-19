@@ -23,7 +23,7 @@ class Auth:
             bool: True if authentication is required, False otherwise.
         """
 
-        return True
+        return False
 
     def authorization_header(self, request=None) -> str:
         """Get Authorization Header Field
