@@ -29,4 +29,3 @@ class BasicAuth(Auth):
             if field_match is not None:
                 return field_match.group('token')
         return None
-
