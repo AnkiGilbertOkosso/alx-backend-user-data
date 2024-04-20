@@ -3,6 +3,7 @@
 
 Provides functionalities for authentication in the API.
 """
+import os
 import re
 from typing import List, TypeVar
 from flask import request
@@ -58,3 +59,18 @@ class Auth:
             TypeVar('User'): The current user from the request.
         """
         return None
+
+    def session_cookie(self, request=None) -> str:
+        """Get Session Cookie Value
+
+        Gets the value of the cookie named SESSION_NAME.
+
+        Args:
+            request: The Flask request object.
+
+        Returns:
+            str: The value of the session cookie.
+        """
+        if request is not None:
+            cookie_name = os.getenv('SESSION_NAME')
+            return request.cookies.get(cookie_name)
