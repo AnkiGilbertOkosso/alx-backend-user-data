@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Module for authentication-related routes.
 """
+from uuid import uuid4
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
 from db import DB
@@ -11,6 +12,11 @@ def _hash_password(password: str) -> bytes:
     """Hashes any password.
     """
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+def _generate_uuid() -> str:
+    """Generates a UUID.
+    """
+    return str(uuid4())
 
 
 class Auth:
