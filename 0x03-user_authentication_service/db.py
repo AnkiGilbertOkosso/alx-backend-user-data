@@ -18,7 +18,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -33,12 +33,23 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """Add a new user to the database.
+        """Add a new user to the database
+
+        Args:
+            email (str): The email of the user.
+            hashed_password (str): The hashed password of the user.
+
+        Returns:
+            User: The created user object.
         """
-        n_user = User(email=email, hashed_password=hashed_password)
-        self._session.add(n_user)
-        self._session.commit()
-        return n_user
+        user = User(email=email, hashed_password=hashed_password)
+        try:
+            self._session.add(user)
+            self._session.commit()
+            return user
+        except SQLAlchemyError as e:
+            self._session.rollback()
+            raise e
 
     def find_user_by(self, **kwargs) -> User:
         """Find a user based on a set of filters.
