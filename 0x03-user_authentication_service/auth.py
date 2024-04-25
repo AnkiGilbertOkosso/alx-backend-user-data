@@ -53,7 +53,6 @@ class Auth:
             return False
         return False
 
-
     def create_session(self, email: str) -> str:
         """Generates a new session for a user.
         """
