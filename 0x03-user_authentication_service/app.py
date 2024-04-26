@@ -22,18 +22,13 @@ def index() -> Response:
 @app.route("/users", methods=["POST"], strict_slashes=False)
 def users() -> Response:
     """Handle user registration."""
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        try:
-            AUTH.register_user(email, password)
-            mess = jsonify({"email": email, "message": "User created"})
-            return mess, 200
-        except Exception:
-            message = jsonify({"message": "Email already registered"})
-            return message, 200
-    else:
-        abort(400)
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        AUTH.register_user(email, password)
+        return jsonify({"email": email, "message": "user created"}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
 
 
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
