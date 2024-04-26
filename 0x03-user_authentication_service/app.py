@@ -23,15 +23,15 @@ def index() -> Response:
 def users() -> Response:
     """Handle user registration."""
     if request.method == "POST":
-        r_email = request.form.get("email")
-        email = r_email.strip()
-        r_password = request.form.get("password")
-        password = r_password.strip()
+        email = request.form.get("email")
+        password = request.form.get("password")
         try:
             AUTH.register_user(email, password)
-            return jsonify({"email": email, "message": "User created"})
+            mess = jsonify({"email": email, "message": "User created"})
+            return mess, 200
         except Exception:
-            return jsonify({"message": "Email already registered"})
+            message = jsonify({"message": "Email already registered"})
+            return message, 200
     else:
         abort(400)
 
